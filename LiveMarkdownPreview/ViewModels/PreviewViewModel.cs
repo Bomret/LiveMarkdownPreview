@@ -1,28 +1,34 @@
 ﻿using System.ComponentModel.Composition;
-using System.IO;
 using System.Threading.Tasks;
 using Caliburn.Micro;
 using LiveMarkdownPreview.Events;
-using MarkdownSharp;
+using LiveMarkdownPreview.Infrastructure.Contracts;
+using NiceTry;
 
 namespace LiveMarkdownPreview.ViewModels
 {
     [Export(typeof (PreviewViewModel))]
     public sealed class PreviewViewModel : Screen,
-        IHandle<FileChanged>,
-        IHandle<FileSelected>
+                                           IHandleWithTask<FileSelected>,
+                                           IHandleWithTask<FileChanged>
     {
-        private readonly Markdown _markdown;
+        private readonly IParseMarkdown _parseMarkdown;
+        private readonly IReadFiles _readFile;
         private string _html;
 
         [ImportingConstructor]
-        public PreviewViewModel(IEventAggregator pubSub)
+        public PreviewViewModel(FooterViewModel footer, IReadFiles readFile, IParseMarkdown parseMarkdown,
+                                IEventAggregator pubSub)
         {
             pubSub.Subscribe(this);
 
-            _markdown = new Markdown();
+            _readFile = readFile;
+            _parseMarkdown = parseMarkdown;
+
+            Footer = footer;
         }
 
+        public FooterViewModel Footer { get; private set; }
 
         public string Html
         {
@@ -34,25 +40,20 @@ namespace LiveMarkdownPreview.ViewModels
             }
         }
 
-        public async void Handle(FileChanged message)
+        public async Task Handle(FileChanged message)
         {
-            var content = await ReadFile(message.FullPath);
+            var getMarkdown = await _readFile.From(message.FullPath);
 
-            Html = _markdown.Transform(content);
+            getMarkdown.Map(md => _parseMarkdown.AsHtml(md))
+                       .Apply(html => Html = html);
         }
 
-        public async void Handle(FileSelected message)
+        public async Task Handle(FileSelected message)
         {
-            var content = await ReadFile(message.FullPath);
+            var getMarkdown = await _readFile.From(message.FullPath);
 
-            Html = _markdown.Transform(content);
-        }
-
-        private static async Task<string> ReadFile(string fullPath)
-        {
-            using (var fs = new FileStream(fullPath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
-            using (var reader = new StreamReader(fs))
-                return await reader.ReadToEndAsync();
+            getMarkdown.Map(md => _parseMarkdown.AsHtml(md))
+                       .Apply(html => Html = html);
         }
     }
 }

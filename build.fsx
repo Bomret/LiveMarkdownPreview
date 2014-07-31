@@ -10,7 +10,6 @@ let id = "949c5de6-a78e-4479-82de-f385d96a9ca0"
 let authors = ["Stefan Reichel"]
 let tags = "markdown, preview, html"
 
-let solution = name + ".sln"
 let builtAssembly = name + ".exe"
 let publishDir = "./publish"
 let buildDir = "./build"
@@ -32,7 +31,7 @@ Target "BuildApp" (fun _ ->
          Attribute.Version version
          Attribute.FileVersion version]
 
-    MSBuildRelease buildDir "Build" [solution]
+    MSBuildRelease buildDir "Build" [(name @@ name + ".csproj")]
     |> Log "Building lib: "
 )
 

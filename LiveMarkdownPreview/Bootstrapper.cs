@@ -5,6 +5,8 @@ using System.ComponentModel.Composition.Hosting;
 using System.Linq;
 using System.Windows;
 using Caliburn.Micro;
+using LiveMarkdownPreview.Infrastructure.Activities;
+using LiveMarkdownPreview.Infrastructure.Contracts;
 using LiveMarkdownPreview.ViewModels;
 
 namespace LiveMarkdownPreview
@@ -28,6 +30,11 @@ namespace LiveMarkdownPreview
 
             batch.AddExportedValue<IWindowManager>(new WindowManager());
             batch.AddExportedValue<IEventAggregator>(new EventAggregator());
+
+            batch.AddExportedValue<INotifyOnFileChanges>(new NotifyOnFileChanges());
+            batch.AddExportedValue<IReadFiles>(new ReadFiles());
+            batch.AddExportedValue<IParseMarkdown>(new ParseMarkdown());
+
             batch.AddExportedValue(_container);
 
             _container.Compose(batch);

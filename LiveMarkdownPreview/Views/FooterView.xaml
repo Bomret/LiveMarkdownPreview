@@ -1,0 +1,20 @@
+﻿<UserControl x:Class="LiveMarkdownPreview.Views.FooterView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:viewModels="clr-namespace:LiveMarkdownPreview.ViewModels"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             mc:Ignorable="d"
+             d:DesignHeight="30" d:DesignWidth="600">
+    <Grid Background="{StaticResource BackgroundColor}">
+        <WrapPanel VerticalAlignment="Center"
+                   HorizontalAlignment="Right">
+            <TextBlock Text="Use CSS: "
+                       Style="{StaticResource Property}" />
+
+            <ComboBox x:Name="CssFiles"
+                      Width="100" />
+        </WrapPanel>
+
+    </Grid>
+</UserControl>

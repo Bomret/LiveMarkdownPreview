@@ -1,0 +1,25 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <SolidColorBrush x:Key="TextColor"
+                     Color="DimGray" />
+
+    <SolidColorBrush x:Key="WarningColor"
+                     Color="PaleVioletRed" />
+
+    <SolidColorBrush x:Key="ApprovalColor"
+                     Color="LimeGreen" />
+
+    <SolidColorBrush x:Key="BorderColor"
+                     Color="LightGray" />
+
+    <SolidColorBrush x:Key="BackgroundColor"
+                     Color="WhiteSmoke" />
+
+    <SolidColorBrush x:Key="HeadingColor"
+                     Color="DodgerBlue" />
+
+    <SolidColorBrush x:Key="SeparatorColor"
+                     Color="#DDD" />
+
+</ResourceDictionary>
